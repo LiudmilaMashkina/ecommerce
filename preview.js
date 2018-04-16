@@ -1,5 +1,3 @@
-let filteredProducts = products_obj
-
 class Preview {
     constructor(data_obj, filter) {
         this.data_obj = data_obj;
@@ -10,18 +8,16 @@ class Preview {
         return this._data_obj;
     }
 
-    set data_obj({id = null, name = null, product_name = null, type = null, preview_img = null, price = null, rating = null, reviews = null} =
-        {id : "0", name : null, product_name : null, type : null, preview_img : null, price: "0.0", rating : "0.0", reviews : "0"}) {
-        this._data_obj = {id, name, product_name, type, preview_img, price, rating, reviews};
+    set data_obj(data_obj) {
+        this._data_obj = data_obj;
     }
 
     buildProductPreview(block) {
         const div = document.createElement('div');
         div.classList.add('product-preview');
-        // div.setAttribute("onclick", "openProduct()");
         block.appendChild(div);
 
-        this.creatPreviewImg(div); //////?????
+        this.creatPreviewImg(div);
 
         const info = document.createElement('div');
         info.style.width = "85%";
@@ -58,7 +54,6 @@ class Preview {
         Preview.createRegTextLine(`${this.data_obj.reviews.length} reviews`, div1);
     }
 
-    /// TODO: add scaling
     creatPreviewImg(parent) {
         const div = document.createElement('div');
         div.classList.add('img-box');
@@ -78,34 +73,8 @@ class Preview {
     }
 }
 
-function openProduct() {
-    alert("Not now");
-}
-
-
-function loadIndex(){
-  /// creating section with artists
-  const artists = document.querySelector("#artists-block");
-  /// creating section with products
-  const products = document.querySelector("#products-block");
-  /// creating section with charities
-  const charities = document.querySelector("#charities-block");
-
-  for(let i = 0; i < 4; ++i){
-      const artist = new Preview(artists_obj[i]);
-      artist.buildProductPreview(artists);
-
-      const product = new Preview(products_obj[i]);
-      product.buildProductPreview(products);
-
-      const charity = new Preview(charities_obj[i]);
-      charity.buildProductPreview(charities);
-  }
-}
-
-
-
 // Products Page
+let filteredProducts = products_obj
 
 let newUnitDiv = () => {
   let div = document.createElement('div')
@@ -120,12 +89,7 @@ let newProduct = (data,index,div)=> {
   return product
 }
 
-
-
 function loadProducts(){
-
-  //console.log(filteredProducts);
-
   const select = document.querySelector("select")
   const products = document.querySelector("#products");
   while (products.firstElementChild) products.removeChild(products.firstElementChild)
@@ -195,32 +159,12 @@ document.addEventListener("click",(event)=>{
 const select = document.querySelector("select")
 select.addEventListener("change", ()=>{
   let name = select.children[select.selectedIndex].value
-  //console.log(name);
-  //console.log(filteredProducts);
   if (name !== 'All Artists') {
     filteredProducts = products_obj.filter(product => product.name === name)
   } else {
     filteredProducts = products_obj
   }
-  //console.log(filteredProducts);
   loadProducts()
 })
-//
-// id : 1,
-// name : "K. Malevich",
-// product_name : "Black Square",
-// type : "product",
-// preview_img : "src/black_square_malevich.jpg",
-// price : "1",
-// rating : "3.5",
-// reviews : ["review-1", "review-2", "review-3"]
+
 createOptions()
-
-
-// function getItems(filepath, cb){
-//     fs.readFile(filename, 'utf-8', function(error, data){
-//       if(error) console.log('Error:', error)
-
-//       cb(JSON.parse(data))
-//     })
-// }
